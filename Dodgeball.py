@@ -5,11 +5,13 @@ import random
 pygame.init()
 
 # Set display height and width
-display_width = 800
-display_height = 800
+display_width = 900
+display_height = 900
 
 # Define colors
 brown = (170, 89, 1)
+white = (255, 255, 255)
+red = (155, 0, 0)
 
 person_width = 73
 
@@ -26,8 +28,13 @@ charImg = pygame.image.load('character.png')
 background = pygame.image.load('gymfloor.png')
 ballImg = pygame.image.load('ball.png')
 
+def score_count(count):
+	displayText = pygame.font.Font("Consolas.ttf", 75)
+	displayText = displayText.render(str(count), True, white)
+	gameDisplay.blit(displayText, (display_width / 2, 50))
+
 def text_objects(text, font):
-	textSurface = font.render(text, True, brown)
+	textSurface = font.render(text, True, red)
 	return textSurface, textSurface.get_rect()
 
 def show_message(text):
@@ -60,6 +67,8 @@ def game_loop():
 	ball_startx = random.randrange(0, display_width - 100)
 	ball_starty = -600
 	ball_speed = 13
+
+	score = 0
 
 	gameExit = False
 
@@ -104,6 +113,7 @@ def game_loop():
 
 		# Draw character
 		char(char_x, char_y)
+		score_count(score)
 
 		# Check for collisions
 		if char_y < ball_starty + 40:
@@ -114,7 +124,8 @@ def game_loop():
 		if ball_starty > display_height:
 			ball_starty = 0 - 100
 			ball_startx = random.randrange(0, display_width - 100)
-		
+			score += 1
+
 		pygame.display.update()
 
 		clock.tick(60)
